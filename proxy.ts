@@ -5,10 +5,11 @@ import type { auth } from "@/lib/auth";
 type Session = typeof auth.$Infer.Session;
 
 export default async function authMiddleware(request: NextRequest) {
+  const baseURL = request.nextUrl.origin;
   const { data: session } = await betterFetch<Session>(
     "/api/auth/get-session",
     {
-      baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
+      baseURL,
       headers: {
         cookie: request.headers.get("cookie") || "", // Pass cookies
       },
